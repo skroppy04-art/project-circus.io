@@ -126,19 +126,10 @@ button:hover{
 </div>
 
 <button onclick="copyIP()">Скопировать IP</button>
-<script>
-fetch("http://213.171.18.141:32946//v1/server", {
-  headers: {
-    "x-auth-key": "Project_Circus_API_Seckret"
-  }
-})
-.then(res => res.json())
-.then(data => console.log(data));
-</script>
+
 <div class="status">
 Онлайн: <span id="players">...</span><br>
-Пинг: <span id="ping">...</span><br>
-TPS: <span id="tps">...</span>
+
 </div>
 
 </div>
