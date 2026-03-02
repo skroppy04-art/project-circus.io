@@ -126,11 +126,6 @@ button:hover{
 </div>
 
 <button onclick="copyIP()">Скопировать IP</button>
-
-<div class="status">
-Онлайн: <span id="players">...</span><br>
-Пинг: <span id="ping">...</span>
-</div>
 <script>
 fetch("http://213.171.18.141:32946//v1/server", {
   headers: {
@@ -140,6 +135,12 @@ fetch("http://213.171.18.141:32946//v1/server", {
 .then(res => res.json())
 .then(data => console.log(data));
 </script>
+<div class="status">
+Онлайн: <span id="players">...</span><br>
+Пинг: <span id="ping">...</span>
+TPS: <span id="tps">...</span>
+</div>
+
 </div>
 
 <div class="footer">
