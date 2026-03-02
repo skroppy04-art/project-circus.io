@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Minecraft Server</title>
+
+<style>
+body {
+    margin:0;
+    font-family: Arial;
+    background: linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+    color:white;
+    text-align:center;
+}
+
+.container {
+    margin-top:100px;
+}
+
+h1 {
+    font-size:50px;
+}
+
+.ip-box {
+    background:#111;
+    padding:15px;
+    display:inline-block;
+    border-radius:10px;
+    margin:20px;
+}
+
+button {
+    padding:12px 20px;
+    border:none;
+    border-radius:8px;
+    background:#00c3ff;
+    color:white;
+    font-size:16px;
+    cursor:pointer;
+}
+
+button:hover {
+    background:#0099cc;
+}
+
+.status {
+    margin-top:20px;
+    font-size:20px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🔥 My Minecraft Server</h1>
+
+<div class="ip-box">
+    <span id="ip">play.myserver.net</span>
+</div>
+
+<br>
+
+<button onclick="copyIP()">Скопировать IP</button>
+
+<div class="status">
+    Онлайн: <span id="players">Загрузка...</span>
+</div>
+
+<br><br>
+
+<a href="https://discord.gg/yourlink">
+<button>Discord</button>
+</a>
+
+</div>
+
+<script>
+function copyIP() {
+    navigator.clipboard.writeText(
+        document.getElementById("ip").innerText
+    );
+    alert("IP скопирован!");
+}
+
+// Получение онлайна сервера
+fetch("https://api.mcsrvstat.us/2/play.myserver.net")
+.then(res => res.json())
+.then(data => {
+    if(data.online){
+        document.getElementById("players")
+        .innerText =
+        data.players.online + "/" + data.players.max;
+    } else {
+        document.getElementById("players")
+        .innerText = "Сервер оффлайн";
+    }
+});
+</script>
+
+</body>
+</html>
