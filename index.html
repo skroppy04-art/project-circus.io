@@ -58,7 +58,7 @@ button:hover {
 <h1>🔥 My Minecraft Server</h1>
 
 <div class="ip-box">
-    <span id="ip">play.myserver.net</span>
+    <span id="ip">213.171.18.141:32172</span>
 </div>
 
 <br>
@@ -86,7 +86,7 @@ function copyIP() {
 }
 
 // Получение онлайна сервера
-fetch("https://api.mcsrvstat.us/2/play.myserver.net")
+fetch("https://api.mcsrvstat.us/2/213.171.18.141:32172")
 .then(res => res.json())
 .then(data => {
     if(data.online){
