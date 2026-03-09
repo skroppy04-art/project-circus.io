@@ -339,13 +339,6 @@ target="_blank">
 
 <script>
 
-function copyIP(){
-navigator.clipboard.writeText(
-document.getElementById("ip").innerText
-);
-alert("IP скопирован!");
-}
-
 fetch("https://api.mcsrvstat.us/2/213.171.18.141:32172")
 .then(r=>r.json())
 .then(data=>{
