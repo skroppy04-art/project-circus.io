@@ -235,6 +235,12 @@ margin-top:60px;
 
 <button onclick="copyIP()">Скопировать IP</button>
 
+<script>
+function copyIP() {
+    navigator.clipboard.writeText("play.projectcircus.ru");
+    alert("IP скопирован!");
+}
+</script>
 <button onclick="window.open('https://discord.gg/SzHje3fJWD')">
 Discord
 </button>
