@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Project Circus</title>
-<link rel="icon" type="image/png" href="favicon.png">
+
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&family=Inter:wght@400;500&display=swap" rel="stylesheet">
 
 <style>
@@ -31,44 +31,7 @@ z-index:-1;
 h1,h2{
 font-family:'Orbitron', sans-serif;
 }
- /* ===== SOCIAL ===== */
 
-.social{
-display:flex;
-justify-content:center;
-gap:20px;
-margin:40px 0;
-flex-wrap:wrap;
-}
-
-.social-btn{
-padding:12px 22px;
-border-radius:8px;
-text-decoration:none;
-color:white;
-font-weight:500;
-transition:.25s;
-}
-
-.tiktok{
-background:#000;
-}
-
-.vk{
-background:#0077ff;
-}
-
-.discord{
-background:#5865F2;
-}
-
-.telegram{
-background:#2AABEE;
-}
-
-.social-btn:hover{
-transform:scale(1.05);
-}
 /* ===== NAVBAR ===== */
 
 .navbar{
@@ -172,29 +135,6 @@ text-align:center;
 font-size:40px;
 margin-bottom:20px;
 }
-
-/* ===== FEATURES ===== */
-
-.features{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-gap:30px;
-margin-top:40px;
-}
-
-.feature{
-padding:30px;
-background:rgba(0,0,0,0.45);
-border-radius:15px;
-backdrop-filter:blur(8px);
-transition:.25s;
-}
-
-.feature:hover{
-transform:translateY(-5px);
-box-shadow:0 0 20px #00c3ff50;
-}
-
 /* ===== VOTE ===== */
 
 .vote{
@@ -232,6 +172,35 @@ background:#2e8bff;
 .tmonitor{
 background:#3ef79b;
 }
+/* ===== FEATURES ===== */
+
+.features{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:30px;
+margin-top:40px;
+}
+
+.feature{
+padding:30px;
+background:rgba(0,0,0,0.45);
+border-radius:15px;
+backdrop-filter:blur(8px);
+transition:.25s;
+}
+
+.feature:hover{
+transform:translateY(-5px);
+box-shadow:0 0 20px #00c3ff50;
+}
+
+/* ===== VOTE ===== */
+
+.vote{
+text-align:center;
+margin:40px 0;
+}
+
 /* ===== FOOTER ===== */
 
 .footer{
@@ -253,7 +222,7 @@ margin-top:60px;
 <div class="logo">🎪 Project Circus</div>
 
 <div class="menu">
-<a href="http://213.171.18.141:32172">Карта</a>
+<a href="/http://213.171.18.141:32172/">Карта</a>
 <a href="https://discord.gg/SzHje3fJWD">Discord</a>
 </div>
 
@@ -265,26 +234,33 @@ margin-top:60px;
 
 <h1>Project Circus</h1>
 
-<p>Vanilla Survival сервер Minecraft 1.21.11</p>
+<p>Vanilla Survival сервер Minecraft 1.21.1</p>
 
 <div class="ip-box">
 <span id="ip">play.projectcircus.ru</span>
 </div>
-
-<div class="buttons">
-
-<button onclick="copyIP()">Скопировать IP</button>
 <script>
 function copyIP() {
     navigator.clipboard.writeText("play.projectcircus.ru");
     alert("IP скопирован!");
 }
 </script>
+<div class="buttons">
+
+<button onclick="copyIP()">Скопировать IP</button>
+
+<button onclick="window.open('https://discord.gg/SzHje3fJWD')">
+Discord
+</button>
+
+</div>
+
 <div class="status">
 Онлайн: <span id="players">...</span>
 </div>
- 
+
 </div>
+
 <!-- ABOUT -->
 
 <div class="section">
@@ -372,9 +348,7 @@ target="_blank">
 <div class="footer">
 © 2026 Project Circus
 </div>
-
 <script>
-
 fetch("https://api.mcsrvstat.us/2/213.171.18.141:32946")
 .then(r=>r.json())
 .then(data=>{
