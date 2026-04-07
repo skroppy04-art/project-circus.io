@@ -28,3 +28,7 @@ def login():
     return jsonify({"status": "error"})
 
 app.run(host="0.0.0.0", port=10000)
+
+@app.route('/')
+def home():
+    return "API работает"
