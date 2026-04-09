@@ -29,24 +29,21 @@ def login():
         password = data.get('password', '')
 
         cursor = db.cursor()
-        cursor.execute("SELECT password, salt FROM authme WHERE username=%s OR realname=%s", (username, username))
+        cursor.execute(
+            "SELECT password FROM authme WHERE LOWER(username)=%s OR LOWER(realname)=%s",
+            (username, username)
+        )
         user = cursor.fetchone()
 
         if not user:
             return jsonify({"status": "error", "msg": "user not found"})
 
         db_hash = user[0]
-        salt = user[1] or ""
 
-        # Вариант 1
-        hash1 = hashlib.sha256((password + salt).encode()).hexdigest()
+        # SHA256(password)
+        hash_check = hashlib.sha256(password.encode()).hexdigest()
 
-        # Вариант 2
-        hash2 = hashlib.sha256(
-            (hashlib.sha256(password.encode()).hexdigest() + salt).encode()
-        ).hexdigest()
-
-        if hash1 == db_hash or hash2 == db_hash:
+        if hash_check == db_hash:
             return jsonify({"status": "ok"})
 
         return jsonify({"status": "error", "msg": "wrong password"})
