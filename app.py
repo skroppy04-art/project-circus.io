@@ -29,7 +29,7 @@ def login():
         password = data.get('password', '')
 
         cursor = db.cursor()
-        cursor.execute("SELECT password, salt FROM authme WHERE username=%s", (username,))
+        cursor.execute("SELECT password, salt FROM authme WHERE username=%s OR realname=%s", (username, username))
         user = cursor.fetchone()
 
         if not user:
