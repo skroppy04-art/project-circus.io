@@ -3,7 +3,7 @@ from flask_cors import CORS
 import pymysql
 import bcrypt
 import os
-
+import hashlib
 app = Flask(__name__)
 CORS(app)
 
@@ -18,8 +18,6 @@ db = pymysql.connect(
 @app.route('/')
 def home():
     return "API работает"
-
-import hashlib
 
 @app.route('/login', methods=['POST'])
 def login():
@@ -40,10 +38,11 @@ def login():
 
         db_hash = user[0]
 
-        # SHA256(password)
-        hash_check = hashlib.sha256(password.encode()).hexdigest()
+        # 2 варианта (lower + upper)
+        hash_lower = hashlib.sha256(password.encode()).hexdigest()
+        hash_upper = hash_lower.upper()
 
-        if hash_check == db_hash:
+        if db_hash == hash_lower or db_hash == hash_upper:
             return jsonify({"status": "ok"})
 
         return jsonify({"status": "error", "msg": "wrong password"})
