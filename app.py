@@ -36,7 +36,7 @@ def login():
             return jsonify({"status": "error", "msg": "user not found"})
 
         db_hash = user[0]
-        salt = user[1]
+        salt = user[1] or ""
 
         # Вариант 1
         hash1 = hashlib.sha256((password + salt).encode()).hexdigest()
