@@ -40,20 +40,22 @@ def login():
     realname = user[0]
     db_hash_full = user[1]
 
-    # проверка пароля (как у тебя уже есть)
+    # проверка пароля
     # ...
 
-    # 🔥 ВАЖНО: создаём пользователя в user_data
+    username_lower = realname.lower()
+
+    # 🔥 Проверяем по lowercase username
     cursor.execute(
         "SELECT * FROM user_data WHERE username=%s",
-        (realname,)
+        (username_lower,)
     )
     exists = cursor.fetchone()
 
     if not exists:
         cursor.execute(
-            "INSERT INTO user_data (username, balance, role) VALUES (%s, 0, 'player')",
-            (realname,)
+            "INSERT INTO user_data (username, realname, balance, role) VALUES (%s, %s, 0, 'player')",
+            (username_lower, realname)
         )
         db.commit()
 
