@@ -64,19 +64,30 @@ def login():
         "username": realname
     }
         
-@app.route("/profile", methods=["POST"])
+@app.route('/profile', methods=['POST'])
 def profile():
-    username = request.json.get("username")
+    data = request.json
+    username = data.get('username').lower()
 
-    if not username:
-        return {"error": "no username"}
-
-    cursor = db.cursor(pymysql.cursors.DictCursor)
-
-    cursor.execute("SELECT * FROM user_data WHERE username=%s", (username,))
+    cursor = db.cursor()
+    cursor.execute(
+        "SELECT realname, balance, role FROM user_data WHERE username=%s",
+        (username,)
+    )
     user = cursor.fetchone()
 
-    return user if user else {"error": "not found"}
+    if not user:
+        return {"status": "error"}
+
+    return {
+        "status": "ok",
+        "realname": user["realname"],
+        "balance": user["balance"],
+        "role": user["role"]
+    }
+
+if __name__ == "__main__":
+    app.run(debug=True)
 # 🚀 запуск
 port = int(os.environ.get("PORT", 10000))
 app.run(host="0.0.0.0", port=port)
