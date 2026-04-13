@@ -62,17 +62,31 @@ def login():
 def profile():
     username = request.json["username"]
 
-    user = db.execute("SELECT * FROM user_data WHERE username=%s", (username,)).fetchone()
+    user = db.execute(
+        "SELECT * FROM user_data WHERE username=%s",
+        (username,)
+    ).fetchone()
 
     if not user:
-        db.execute("INSERT INTO user_data (username, balance, rank) VALUES (%s, 0, 'player')", (username,))
+        db.execute(
+            "INSERT INTO user_data (username, balance, role) VALUES (%s, 0, 'player')",
+            (username,)
+        )
         db.commit()
-        return {"balance": 0, "rank": "player"}
+
+        return {
+            "username": username,
+            "balance": 0,
+            "role": "player",
+            "skin": None
+        }
 
     return {
+        "username": user["username"],
         "balance": user["balance"],
-        "rank": user["rank"],
+        "role": user["role"],
         "skin": user["skin"]
+    }
     }
 # 🚀 запуск
 port = int(os.environ.get("PORT", 10000))
