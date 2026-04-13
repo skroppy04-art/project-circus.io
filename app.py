@@ -49,6 +49,8 @@ def login():
 
     except Exception as e:
         return jsonify({"status": "error", "msg": str(e)})
+print("DB HASH:", db_hash)
+print("INPUT HASH:", test_hash)
 # запуск
 port = int(os.environ.get("PORT", 10000))
 app.run(host="0.0.0.0", port=port)
