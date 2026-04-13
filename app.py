@@ -23,7 +23,7 @@ def home():
 def login():
     try:
         data = request.json
-        username = data.get('username', '').lower()
+        username = data.get('username', '')
         password = data.get('password', '')
 
         cursor = db.cursor()
