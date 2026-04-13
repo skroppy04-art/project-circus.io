@@ -36,24 +36,22 @@ def login():
         user = cursor.fetchone()
 
         if not user:
-            return jsonify({"status": "error", "msg": "user not found"})
+            return jsonify({
+                "status": "error",
+                "msg": "user not found",
+                "username": username
+            })
 
         db_hash = user[0]
-
-        # 🔍 считаем хэш
         input_hash = hashlib.sha256(password.encode()).hexdigest()
 
-        # 🔥 DEBUG (ВАЖНО: только тут!)
-        print("DB HASH:", db_hash)
-        print("INPUT HASH:", input_hash)
-
-        if db_hash.lower() == input_hash.lower():
-            return jsonify({"status": "ok"})
-
-        return jsonify({"status": "error", "msg": "wrong password"})
+        return jsonify({
+            "status": "debug",
+            "db_hash": db_hash,
+            "input_hash": input_hash
+        })
 
     except Exception as e:
-        print("ERROR:", e)
         return jsonify({"status": "error", "msg": str(e)})
 
 # 🚀 запуск
