@@ -62,15 +62,18 @@ def login():
 def profile():
     username = request.json["username"]
 
+    cursor = db.cursor(pymysql.cursors.DictCursor)
+
     # 1. ищем игрока
-    user = db.execute(
+    cursor.execute(
         "SELECT * FROM user_data WHERE username=%s",
         (username,)
-    ).fetchone()
+    )
+    user = cursor.fetchone()
 
     # 2. если нет — создаём
     if not user:
-        db.execute(
+        cursor.execute(
             "INSERT INTO user_data (username, balance, role, skin) VALUES (%s, 0, 'player', NULL)",
             (username,)
         )
