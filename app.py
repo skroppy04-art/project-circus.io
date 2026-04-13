@@ -19,31 +19,36 @@ db = pymysql.connect(
 def home():
     return "API работает"
 
-async function login() {
-    const username = document.getElementById("login").value;
-    const password = document.getElementById("password").value;
+@app.route('/login', methods=['POST'])
+def login():
+    try:
+        data = request.json
+        username = data.get('username', '').lower()
+        password = data.get('password', '')
 
-    const status = document.getElementById("loginStatus");
-    status.innerText = "Загрузка...";
+        cursor = db.cursor()
 
-    try {
-        const res = await fetch("https://project-circus-io.onrender.com/login", {
-            method: "POST",
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify({
-                username: username,
-                password: password
-            })
-        });
+        cursor.execute(
+            "SELECT password FROM authme WHERE LOWER(username)=%s OR LOWER(realname)=%s",
+            (username, username)
+        )
 
-        const data = await res.json();
+        user = cursor.fetchone()
 
-        status.innerText = JSON.stringify(data);
+        if not user:
+            return jsonify({"status": "error", "msg": "user not found"})
 
-    } catch (e) {
-        status.innerText = "Ошибка: " + e;
-    }
-}
+        db_hash = user[0]
+        input_hash = hashlib.sha256(password.encode()).hexdigest()
+
+        return jsonify({
+            "status": "debug",
+            "db_hash": db_hash,
+            "input_hash": input_hash
+        })
+
+    except Exception as e:
+        return jsonify({"status": "error", "msg": str(e)})
 
 # 🚀 запуск
 port = int(os.environ.get("PORT", 10000))
