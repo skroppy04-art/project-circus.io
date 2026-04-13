@@ -57,7 +57,23 @@ def login():
 
     except Exception as e:
         return jsonify({"status": "error", "msg": str(e)})
+        
+@app.route("/profile", methods=["POST"])
+def profile():
+    username = request.json["username"]
 
+    user = db.execute("SELECT * FROM user_data WHERE username=%s", (username,)).fetchone()
+
+    if not user:
+        db.execute("INSERT INTO user_data (username, balance, rank) VALUES (%s, 0, 'player')", (username,))
+        db.commit()
+        return {"balance": 0, "rank": "player"}
+
+    return {
+        "balance": user["balance"],
+        "rank": user["rank"],
+        "skin": user["skin"]
+    }
 # 🚀 запуск
 port = int(os.environ.get("PORT", 10000))
 app.run(host="0.0.0.0", port=port)
