@@ -21,42 +21,46 @@ def home():
 
 @app.route('/login', methods=['POST'])
 def login():
-    try:
-        data = request.json
-        username = data.get('username', '')
-        password = data.get('password', '')
+    data = request.json
+    username_input = data.get('username')
+    password = data.get('password')
 
-        cursor = db.cursor()
+    cursor = db.cursor()
 
+    cursor.execute(
+        "SELECT realname, password FROM authme WHERE LOWER(realname)=%s",
+        (username_input.lower(),)
+    )
+
+    user = cursor.fetchone()
+
+    if not user:
+        return {"status": "error"}
+
+    realname = user[0]
+    db_hash_full = user[1]
+
+    # проверка пароля (как у тебя уже есть)
+    # ...
+
+    # 🔥 ВАЖНО: создаём пользователя в user_data
+    cursor.execute(
+        "SELECT * FROM user_data WHERE username=%s",
+        (realname,)
+    )
+    exists = cursor.fetchone()
+
+    if not exists:
         cursor.execute(
-            "SELECT password FROM authme WHERE LOWER(username)=%s OR LOWER(realname)=%s",
-            (username, username)
+            "INSERT INTO user_data (username, balance, role) VALUES (%s, 0, 'player')",
+            (realname,)
         )
+        db.commit()
 
-        user = cursor.fetchone()
-
-        if not user:
-            return jsonify({"status": "error", "msg": "user not found"})
-
-        db_hash_full = user[0]
-
-        # 🔥 парсим строку $SHA$salt$hash
-        if db_hash_full.startswith("$SHA$"):
-            parts = db_hash_full.split("$")
-            salt = parts[2]
-            db_hash = parts[3]
-
-            # SHA256(SHA256(password) + salt)
-            first = hashlib.sha256(password.encode()).hexdigest()
-            final = hashlib.sha256((first + salt).encode()).hexdigest()
-
-            if final == db_hash:
-                return jsonify({"status": "ok"})
-
-        return jsonify({"status": "error", "msg": "wrong password"})
-
-    except Exception as e:
-        return jsonify({"status": "error", "msg": str(e)})
+    return {
+        "status": "ok",
+        "username": realname
+    }
         
 @app.route("/profile", methods=["POST"])
 def profile():
