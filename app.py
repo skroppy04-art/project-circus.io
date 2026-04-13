@@ -38,14 +38,22 @@ def login():
         if not user:
             return jsonify({"status": "error", "msg": "user not found"})
 
-        db_hash = user[0]
-        input_hash = hashlib.sha256(password.encode()).hexdigest()
+        db_hash_full = user[0]
 
-        return jsonify({
-            "status": "debug",
-            "db_hash": db_hash,
-            "input_hash": input_hash
-        })
+        # 🔥 парсим строку $SHA$salt$hash
+        if db_hash_full.startswith("$SHA$"):
+            parts = db_hash_full.split("$")
+            salt = parts[2]
+            db_hash = parts[3]
+
+            # SHA256(SHA256(password) + salt)
+            first = hashlib.sha256(password.encode()).hexdigest()
+            final = hashlib.sha256((first + salt).encode()).hexdigest()
+
+            if final == db_hash:
+                return jsonify({"status": "ok"})
+
+        return jsonify({"status": "error", "msg": "wrong password"})
 
     except Exception as e:
         return jsonify({"status": "error", "msg": str(e)})
