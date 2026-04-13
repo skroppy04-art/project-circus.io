@@ -67,7 +67,7 @@ def login():
 @app.route('/profile', methods=['POST'])
 def profile():
     data = request.json
-    username = data.get('username').lower()
+    username = data.get('username').lower()  # 🔥 ВАЖНО
 
     cursor = db.cursor()
     cursor.execute(
