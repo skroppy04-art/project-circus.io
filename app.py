@@ -67,7 +67,14 @@ def login():
 @app.route('/profile', methods=['POST'])
 def profile():
     data = request.json
-    username = data.get('username').lower()  # 🔥 ВАЖНО
+
+    username = data.get('username')
+
+    # 🔥 защита от None
+    if not username:
+        return {"status": "error", "message": "no username"}
+
+    username = username.lower()
 
     cursor = db.cursor()
     cursor.execute(
@@ -77,7 +84,7 @@ def profile():
     user = cursor.fetchone()
 
     if not user:
-        return {"status": "error"}
+        return {"status": "error", "message": "not found"}
 
     return {
         "status": "ok",
@@ -85,9 +92,6 @@ def profile():
         "balance": user["balance"],
         "role": user["role"]
     }
-
-if __name__ == "__main__":
-    app.run(debug=True)
 # 🚀 запуск
 port = int(os.environ.get("PORT", 10000))
 app.run(host="0.0.0.0", port=port)
