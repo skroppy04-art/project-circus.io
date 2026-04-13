@@ -65,11 +65,12 @@ def profile():
     cursor = db.cursor(pymysql.cursors.DictCursor)
 
     # 1. ищем игрока
-    cursor.execute(
-        "SELECT * FROM user_data WHERE username=%s",
-        (username,)
-    )
-    user = cursor.fetchone()
+   cursor.execute(
+    "SELECT realname, password FROM authme WHERE LOWER(realname)=%s",
+    (username.lower(),)
+)
+
+user = cursor.fetchone()
 
     # 2. если нет — создаём
     if not user:
