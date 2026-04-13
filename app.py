@@ -60,40 +60,17 @@ def login():
         
 @app.route("/profile", methods=["POST"])
 def profile():
-    username = request.json["username"]
+    username = request.json.get("username")
+
+    if not username:
+        return {"error": "no username"}
 
     cursor = db.cursor(pymysql.cursors.DictCursor)
 
-    # 1. ищем игрока
-   cursor.execute(
-    "SELECT realname, password FROM authme WHERE LOWER(realname)=%s",
-    (username.lower(),)
-)
+    cursor.execute("SELECT * FROM user_data WHERE username=%s", (username,))
+    user = cursor.fetchone()
 
-user = cursor.fetchone()
-
-    # 2. если нет — создаём
-    if not user:
-        cursor.execute(
-            "INSERT INTO user_data (username, balance, role, skin) VALUES (%s, 0, 'player', NULL)",
-            (username,)
-        )
-        db.commit()
-
-        return {
-            "username": username,
-            "balance": 0,
-            "role": "player",
-            "skin": None
-        }
-
-    # 3. если есть — возвращаем
-    return {
-        "username": user["username"],
-        "balance": user["balance"],
-        "role": user["role"],
-        "skin": user["skin"]
-    }
+    return user if user else {"error": "not found"}
 # 🚀 запуск
 port = int(os.environ.get("PORT", 10000))
 app.run(host="0.0.0.0", port=port)
