@@ -12,16 +12,13 @@ db = pymysql.connect(
     host=os.getenv("DB_HOST"),
     user=os.getenv("DB_USER"),
     password=os.getenv("DB_PASS"),
-    database=os.getenv("DB_NAME"),
-    cursorclass=pymysql.cursors.Cursor
+    database=os.getenv("DB_NAME")
 )
 
-# 🟢 Проверка сервера
 @app.route('/')
 def home():
     return "API работает"
 
-# 🔐 ЛОГИН
 @app.route('/login', methods=['POST'])
 def login():
     try:
@@ -46,11 +43,10 @@ def login():
         # 🔍 считаем хэш
         input_hash = hashlib.sha256(password.encode()).hexdigest()
 
-        # 🔥 DEBUG (смотри в Render Logs)
+        # 🔥 DEBUG (ВАЖНО: только тут!)
         print("DB HASH:", db_hash)
         print("INPUT HASH:", input_hash)
 
-        # ✅ проверка (с учётом регистра)
         if db_hash.lower() == input_hash.lower():
             return jsonify({"status": "ok"})
 
