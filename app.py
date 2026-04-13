@@ -38,7 +38,6 @@ async function login() {
 
         const data = await res.json();
 
-        // 🔥 ВАЖНО: показываем ВСЁ что пришло
         status.innerText = JSON.stringify(data);
 
     } catch (e) {
