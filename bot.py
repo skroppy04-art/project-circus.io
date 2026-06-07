@@ -338,5 +338,6 @@ async def on_ready():
 
     print(f"Вошёл как {bot.user}")
 
-
+print("Token loaded:", bool(TOKEN))
+print("Token length:", len(TOKEN) if TOKEN else 0)
 bot.run(TOKEN)
