@@ -3,6 +3,10 @@ from discord.ext import commands
 from discord import app_commands
 import aiosqlite
 from mcrcon import MCRcon
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 intents = discord.Intents.default()
 intents.members = True
 intents.message_content = True
