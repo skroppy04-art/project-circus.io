@@ -7,7 +7,10 @@ import os
 from dotenv import load_dotenv
 
 load_dotenv()
-TOKEN = os.getenv("DISCORD_TOKEN")
+GUILD_ID = os.getenv("GUILD_ID")
+APPLICATION_CHANNEL_ID = os.getenv("APPLICATION_CHANNEL_ID")
+APPROVED_ROLE_ID = os.getenv("APPROVED_ROLE_ID")
+TOKEN = os.getenv("TOKEN")
 RCON_HOST = os.getenv("RCON_HOST")
 RCON_PORT = int(os.getenv("RCON_PORT", 25575))
 RCON_PASSWORD = os.getenv("RCON_PASSWORD")
