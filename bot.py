@@ -7,6 +7,10 @@ import os
 from dotenv import load_dotenv
 
 load_dotenv()
+TOKEN = os.getenv("DISCORD_TOKEN")
+RCON_HOST = os.getenv("RCON_HOST")
+RCON_PORT = int(os.getenv("RCON_PORT", 25575))
+RCON_PASSWORD = os.getenv("RCON_PASSWORD")
 intents = discord.Intents.default()
 intents.members = True
 intents.message_content = True
